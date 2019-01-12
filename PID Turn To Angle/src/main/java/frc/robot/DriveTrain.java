@@ -8,17 +8,41 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.*;
-import edu.wpi.first.wpilibj.Talon;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
+
 
 /**
  * Add your docs here.
  */
 public class DriveTrain {
-    Talon talonZero = new Talon(0);
-    Talon talonOne = new Talon(1);
-    Talon talonTwo = new Talon(2);
-    Talon talonThree = new Talon(3);
+    Talon talonZero;
+    Talon talonOne;
+    Talon talonTwo;
+    Talon talonThree;
+    MecanumDrive mDrive;
+    AHRS aHRS;
+    PIDController turnController;
+    PIDAngleWrite pidAngleOutput;
     public DriveTrain () {
-        
+        talonZero = new Talon(0);
+        talonOne = new Talon(1);
+        talonTwo = new Talon(2);
+        talonThree = new Talon(3);
+        mDrive = new MecanumDrive(talonZero, talonTwo, talonOne, talonThree);
+        pidAngleOutput = new PIDAngleWrite();
+        aHRS = new AHRS(SPI.Port.kMXP);
+        aHRS.setPIDSourceType(PIDSourceType.kDisplacement);
+        turnController = new PIDController(Constants.kP, Constants.kI, Constants.kD, aHRS, pidAngleOutput);
+
+    }
+
+    public void pidTurnToAngle (double angle){
+        turnController.setPID(Constants.kP, Constants.kI, Constants.kD);
+        turnController.enable();
+        turnController.setSetpoint(angle);
+        mDrive.driveCartesian(0, 0, pidAngleOutput.getSpeed());
     }
 }

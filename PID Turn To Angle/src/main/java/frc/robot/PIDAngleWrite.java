@@ -14,8 +14,15 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
  * Add your docs here.
  */
 public class PIDAngleWrite implements PIDOutput {
-  public void pidWrite (double PIDWriteOutput) {
-    double TurnOutput = PIDWriteOutput;
+
+  double turnOutput; 
+  public PIDAngleWrite () {
+    turnOutput = 0;
   }
-  
+  public void pidWrite (double pidWriteOutput) {
+    turnOutput = pidWriteOutput;
+  }
+  public double getSpeed () {
+    return turnOutput;
+  }
 }
