@@ -20,7 +20,7 @@ public class PIDAngleWrite implements PIDOutput {
     turnOutput = 0;
   }
   public void pidWrite (double pidWriteOutput) {
-    turnOutput = pidWriteOutput;
+    turnOutput = pidWriteOutput*.6;
   }
   public double getSpeed () {
     return turnOutput;
